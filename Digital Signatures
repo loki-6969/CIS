@@ -1,0 +1,49 @@
+import hashlib
+
+def gcd(a, b):
+    while b:
+        a, b = b, a % b
+    return a
+
+def mod_inverse(e, phi):
+    for d in range(2, phi):
+        if (d * e) % phi == 1:
+            return d
+    return None
+
+p = 61
+q = 53
+
+n = p * q
+phi = (p - 1) * (q - 1)
+
+e = 17
+
+if gcd(e, phi) != 1:
+    print("Choose another value of e")
+
+d = mod_inverse(e, phi)
+
+print("Public Key (e, n):", (e, n))
+print("Private Key (d, n):", (d, n))
+
+message = input("\nEnter the message: ")
+
+message_hash = int(hashlib.sha256(message.encode()).hexdigest(), 16)
+
+signature = pow(message_hash, d, n)
+
+print("\nDigital Signature:", signature)
+
+received_message = input("\nEnter the received message: ")
+
+received_hash = int(hashlib.sha256(received_message.encode()).hexdigest(), 16)
+
+decrypted_hash = pow(signature, e, n)
+
+if decrypted_hash == (received_hash % n):
+    print("\nSignature Verified Successfully!")
+    print("Message is Authentic and Unchanged.")
+else:
+    print("\nSignature Verification Failed!")
+    print("Message has been Modified.")
