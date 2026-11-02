@@ -1,0 +1,63 @@
+Steps:-
+Step 1: Install Wireshark
+Install Wireshark on the Windows computer. During installation, install Npcap when prompted because it is
+required for packet capture.
+Screenshot
+Step 2: Open Wireshark
+Open Wireshark. The main window displays the available network interfaces such as Wi-Fi and Ethernet.
+Screenshot
+Step 3: Select the Active Network Interface
+Identify the network interface that is currently connected to the network. For example, select Wi-Fi if the
+computer is connected through Wi-Fi.
+Screenshot
+Step 4: Start Packet Capture
+Double-click the active network interface. Wireshark will start capturing network packets.
+Screenshot
+Step 5: Generate Test Traffic
+Open Command Prompt and execute:
+ping google.com
+Alternatively, you can ping a permitted device on your own local network, such as the default gateway.
+Screenshot
+Step 6: Detect ICMP Traffic
+In the Wireshark display filter bar, enter the following filter and press Enter:
+icmp
+The captured packets will show ICMP Echo Request and Echo Reply packets.
+Screenshot
+Step 7: Detect TCP Connection Attempts
+Use the following display filter:
+tcp.flags.syn == 1
+This displays TCP SYN packets used during TCP connection establishment. Repeated connection attempts to
+many ports may require further investigation.
+Screenshot
+Step 8: Detect DNS Traffic
+Use:
+dns
+This displays DNS traffic. The source, destination, domain name and query information can be examined.
+Screenshot
+To display DNS queries, use:
+dns.flags.response == 0
+Screenshot
+Step 9: Detect HTTP Traffic
+Use:
+http
+If HTTP traffic is present, Wireshark can display HTTP requests and responses. Modern websites generally use
+HTTPS, so readable HTTP application data may not be available.
+Screenshot
+Step 10: Detect ARP Traffic
+Use:
+arp
+ARP packets can be examined to identify IP-to-MAC address resolution activity. Unexpected ARP behavior can
+be investigated as a possible security event.
+Screenshot
+Step 11: Analyze Possible Port-Scanning Activity
+In an authorized lab environment, examine TCP SYN traffic using:
+tcp.flags.syn == 1
+Screenshot
+Check whether one source repeatedly sends SYN packets to many different destination ports. Such behavior
+may indicate port-scanning activity and should be investigated.
+Step 12: Analyze Possible ICMP Flooding
+Apply the filter:
+icmp
+Observe the number of ICMP packets during the capture. An unusually high volume of packets may require
+further investigation.
+Screenshot
