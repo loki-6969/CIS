@@ -1,0 +1,27 @@
+#Server code
+
+import http.server, ssl
+
+server = http.server.HTTPServer(('localhost', 4443),
+                                http.server.SimpleHTTPRequestHandler)
+
+context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+context.load_cert_chain(certfile='cert.pem', keyfile='key.pem')
+
+server.socket = context.wrap_socket(server.socket, server_side=True)
+
+print("HTTPS server running on https://localhost:4443 (Ctrl+C to stop)")
+
+server.serve_forever()
+
+#Client test (run in another IDLE window)
+
+
+import ssl, urllib.request
+
+ctx = ssl._create_unverified_context()       # accept our self-signed certificate
+
+html = urllib.request.urlopen("https://localhost:4443",
+                              context=ctx).read().decode()
+
+print("Response from secure server:", html)
