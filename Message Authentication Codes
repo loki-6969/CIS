@@ -1,0 +1,21 @@
+import hmac
+import hashlib
+# Shared secret key
+secret_key = b"my_secret_key"
+# Sender side
+message = input("Enter the message: ").encode()
+# Generate MAC
+generated_mac = hmac.new(secret_key, message, hashlib.sha256).hexdigest()
+print("\nGenerated MAC:", generated_mac)
+# Receiver side
+received_message = input("\nEnter the received message: ").encode()
+received_mac = input("Enter the received MAC: ")
+# Generate MAC again
+calculated_mac = hmac.new(secret_key, received_message, hashlib.sha256).hexdigest()
+# Verification
+if hmac.compare_digest(calculated_mac, received_mac):
+ print("\nMessage Authentication Successful!")
+ print("Message is authentic and has not been modified.")
+else:
+ print("\nMessage Authentication Failed!")
+ print("Message has been modified or MAC is incorrect.")
