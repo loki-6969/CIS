@@ -30,3 +30,35 @@ print("Encrypted Text:", cipher)
 
 plain = decrypt(cipher, key)
 print("Decrypted Text:", plain)
+
+# Transposition Cipher
+
+def encrypt(message):
+    even = message[::2]
+    odd = message[1::2]
+    return even + odd
+
+
+def decrypt(cipher):
+    half = (len(cipher) + 1) // 2
+    even = cipher[:half]
+    odd = cipher[half:]
+
+    result = ""
+
+    for i in range(len(odd)):
+        result += even[i] + odd[i]
+
+    if len(even) > len(odd):
+        result += even[-1]
+
+    return result
+
+
+message = input("Enter Message: ")
+
+cipher = encrypt(message)
+print("Encrypted:", cipher)
+
+plain = decrypt(cipher)
+print("Decrypted:", plain)
